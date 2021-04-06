@@ -2,9 +2,8 @@ class Brick {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-        //this.color random
-        this.width = 100;
-        this.height = 70;
+        this.width = 81;
+        this.height = 60;
     }
 
     collision(ball) {
@@ -12,19 +11,22 @@ class Brick {
         //detect collision with brick bottom
         if (ball.y <= this.y + this.height + ball.rad && ball.y >= this.y + this.height && ball.x >= this.x - ball.rad && ball.x <= this.x + this.width + ball.rad) {
             ball.changeY();
-            console.log('collision-bottom');
+            game.score++;
+            game.updateScore();
             return true;
         }
         //detect collision with brick top
         else if (ball.y >= this.y - ball.rad && ball.y <= this.y && ball.x >= this.x - ball.rad && ball.x <= this.x + this.width + ball.rad) {
             ball.changeY();
-            console.log('collision-top');
+            game.score++;
+            game.updateScore();
             return true;
         } 
         //detect collision with brick sides
         else if (ball.y <= this.y + this.height + ball.rad && ball.y >= this.y && ball.x >= this.x - ball.rad && ball.x <= this.x + this.width + ball.rad) {
             ball.xspeed *= -1;
-            console.log('collision-lateral', ball.xspeed, ball.yspeed);
+            game.score++;
+            game.updateScore();
             return true;
         } else {
             return false;
