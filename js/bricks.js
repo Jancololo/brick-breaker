@@ -3,7 +3,9 @@ class Brick {
         this.x = x;
         this.y = y;
         this.width = 81;
-        this.height = 60;
+        this.height = 50;
+
+        this.color = 245;
     }
 
     collision(ball) {
@@ -35,7 +37,7 @@ class Brick {
 
     draw() {
         noStroke();
-        fill(245);
+        fill(this.color);
         rect(this.x, this.y, this.width, this.height, 3);
     }
 }

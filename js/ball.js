@@ -11,11 +11,19 @@ class Ball {
     }
 
     goLeft() {
-        this.xspeed = -4;
+        this.xspeed = -5;
+    }
+
+    goLeftCenter() {
+        this.xspeed = -3;
     }
 
     goRight() {
-        this.xspeed = 4;
+        this.xspeed = 5;
+    }
+
+    goRightCenter() {
+        this.xspeed = 3;
     }
 
     goCenter() {
@@ -53,19 +61,31 @@ class Ball {
             }
 
             //collision with left side of the player
-            if (this.y >= game.player.y - this.rad && this.x >= game.player.x && this.x <= game.player.x + game.player.width / 3) {
+            if (this.y >= game.player.y - this.rad && this.x >= game.player.x && this.x < game.player.x + game.player.width / 5) {
                 this.goLeft();
                 this.changeY();
             }
 
+            //collision with left-center side of the player
+            if (this.y >= game.player.y - this.rad && this.x >= game.player.x + game.player.width / 5 && this.x < game.player.x + game.player.width * 2 / 5) {
+                this.goLeftCenter();
+                this.changeY();
+            }
+
             //collision with center of the player
-            if (this.y >= game.player.y - this.rad && this.x >= game.player.x + game.player.width / 3 && this.x <= game.player.x + game.player.width * 2 / 3) {
+            if (this.y >= game.player.y - this.rad && this.x >= game.player.x + game.player.width * 2 / 5 && this.x < game.player.x + game.player.width * 3 / 5) {
                 this.changeY();
                 this.goCenter();
             }
 
+            //collision with center-right side of the player
+            if (this.y >= game.player.y - this.rad && this.x >= game.player.x + game.player.width * 3 / 5 && this.x < game.player.x + game.player.width * 4 / 5) {
+                this.goRightCenter();
+                this.changeY();
+            }
+
             //collision with right side of the player
-            if (this.y >= game.player.y - this.rad && this.x >= game.player.x + game.player.width * 2 / 3 && this.x <= game.player.x + game.player.width) {
+            if (this.y >= game.player.y - this.rad && this.x >= game.player.x + game.player.width * 4 / 5 && this.x <= game.player.x + game.player.width) {
                 this.goRight();
                 this.changeY();
             }
