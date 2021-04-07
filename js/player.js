@@ -17,7 +17,7 @@ class Player {
             this.x += this.speed;
         }
 
-        if (keyIsDown(LEFT_ARROW) && this.x > - this.width / 2) {
+        if (keyIsDown(LEFT_ARROW) && this.x > -this.width / 2) {
             this.x -= this.speed;
         }
     }

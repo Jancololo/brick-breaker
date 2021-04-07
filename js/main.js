@@ -10,7 +10,6 @@ function preload() {
 
 function setup() {
     createCanvas(WIDTH, HEIGHT);
-
     textFont(unicaHass);
     game.setup();
 }

@@ -47,19 +47,19 @@ class SmallBall {
         }
 
         //collision with left side of the player
-        if (this.y >= game.player.y - this.rad && this.x >= game.player.x && this.x <= game.player.x + game.player.width / 3) {
+        if (this.y >= game.player.y - this.rad && this.y < game.player.y && this.x >= game.player.x && this.x <= game.player.x + game.player.width / 3) {
             this.goLeft();
             this.changeY();
         }
 
         //collision with center of the player
-        if (this.y >= game.player.y - this.rad && this.x >= game.player.x + game.player.width / 3 && this.x <= game.player.x + game.player.width * 2 / 3) {
+        if (this.y >= game.player.y - this.rad && this.y < game.player.y && this.x >= game.player.x + game.player.width / 3 && this.x <= game.player.x + game.player.width * 2 / 3) {
             this.changeY();
             this.goCenter();
         }
 
         //collision with right side of the player
-        if (this.y >= game.player.y - this.rad && this.x >= game.player.x + game.player.width * 2 / 3 && this.x <= game.player.x + game.player.width) {
+        if (this.y >= game.player.y - this.rad && this.y < game.player.y && this.x >= game.player.x + game.player.width * 2 / 3 && this.x <= game.player.x + game.player.width) {
             this.goRight();
             this.changeY();
         }

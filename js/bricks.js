@@ -1,11 +1,11 @@
 class Brick {
-    constructor(x, y) {
+    constructor(x, y, lives) {
         this.x = x;
         this.y = y;
         this.width = 81;
         this.height = 50;
-
         this.color = 245;
+        this.lives = lives;
     }
 
     collision(ball) {
@@ -25,7 +25,7 @@ class Brick {
             return true;
         } 
         //detect collision with brick sides
-        else if (ball.y <= this.y + this.height + ball.rad && ball.y >= this.y && ball.x >= this.x - ball.rad && ball.x <= this.x + this.width + ball.rad) {
+        else if (ball.y < this.y + this.height && ball.y > this.y && ball.x >= this.x - ball.rad && ball.x <= this.x + this.width + ball.rad) {
             ball.xspeed *= -1;
             game.score++;
             game.updateScore();
