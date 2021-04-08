@@ -1,10 +1,11 @@
 class Booster {
-    constructor(x, y) {
+    constructor(x, y, image) {
         this.x = x;
         this.y = y;
+        this.image = image;
         this.yspeed = 3;
-        this.width = 10;
-        this.height = 10;
+        this.width = 27;
+        this.height = this.width;
         this.state = true;
         this.color = '#FF0000';
     }
@@ -12,16 +13,17 @@ class Booster {
     draw() {
         if (this.state) {
             this.y += this.yspeed;
-            noStroke();
-            fill(this.color);
-            rect(this.x, this.y, this.width, this.height);
+            image(this.image, this.x, this.y, this.width, this.height)
+            // noStroke();
+            // fill(this.color);
+            // rect(this.x, this.y, this.width, this.height);
         }
     }
 }
 
 class Live extends Booster {
-    constructor(x, y) {
-        super(x, y);
+    constructor(x, y, image) {
+        super(x, y, image);
         this.color = '#FF00B4';
     }
 
@@ -44,8 +46,8 @@ class Live extends Booster {
 }
 
 class ExtraBall extends Booster {
-    constructor(x, y) {
-        super(x, y);
+    constructor(x, y, image) {
+        super(x, y, image);
         this.color = '#00FFB8';
     }
 

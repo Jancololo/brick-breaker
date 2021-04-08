@@ -1,7 +1,7 @@
 class HardBrick extends Brick {
-    constructor(x, y) {
-        super(x, y);
-        this.color = '#FFFF00';
+    constructor(color, x, y) {
+        super(color, x, y);
+        this.color = '#C6C6C6';
     }
 
     collision(ball) {

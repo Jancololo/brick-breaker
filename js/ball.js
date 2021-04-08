@@ -103,7 +103,7 @@ class Ball {
             }
         }
         noStroke();
-        fill(65);
+        fill(255);
         circle(this.x, this.y, this.diameter)
     }
 

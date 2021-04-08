@@ -1,10 +1,10 @@
 class Brick {
-    constructor(x, y, lives, smallBalls) {
+    constructor(color, x, y, lives, smallBalls) {
         this.x = x;
         this.y = y;
         this.width = 81;
-        this.height = 50;
-        this.color = 245;
+        this.height = 40;
+        this.color = color;
         this.lives = lives;
         this.smallBalls = smallBalls;
     }

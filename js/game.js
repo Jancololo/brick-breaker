@@ -1,11 +1,23 @@
 class Game {
     constructor() {
-        this.rows = 5;
+        this.rows = 6;
         this.columns = 7;
         this.score = 0;
         this.game = false;
         this.level = 1;
         this.bricksDistance = 4;
+        this.bricksColor;
+        this.backgroundColor;
+
+        this.paddleBoosterImage;
+        this.livesBoosterImage;
+        this.ballsBoosterImage;
+    }
+
+    preload() {
+        this.paddleBoosterImage = loadImage('assets/paddle-booster.png');
+        this.livesBoosterImage = loadImage('assets/lives-booster.png');
+        this.ballsBoosterImage = loadImage('assets/balls-booster.png');
     }
 
     setup() {
@@ -19,14 +31,31 @@ class Game {
 
         //create bricks array for level 1
         if (this.level === 1) {
+            this.backgroundColor = '#470700';
+
             for (let i = 0; i < this.rows; i++) {
+
+                if (i === 0) {
+                    this.bricksColor = '#E6B627';
+                } else if (i === 1) {
+                    this.bricksColor = '#F0A624';
+                } else if (i === 2) {
+                    this.bricksColor = '#D97C15';
+                } else if (i === 3) {
+                    this.bricksColor = '#F06A17';
+                } else if (i === 4) {
+                    this.bricksColor = '#E64311';
+                } else {
+                    this.bricksColor = '#DB1212';
+                }
+
                 for (let j = 0; j < this.columns; j++) {
                     if (i * j === 6) {
-                        this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1), 1, 0));
+                        this.bricks.push(new Brick(this.bricksColor, j * 81 + this.bricksDistance * (j + 1), i * 40 + this.bricksDistance * (i + 1), 1, 0));
                     } else if (i === j) {
-                        this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1), 0, 1));
+                        this.bricks.push(new Brick(this.bricksColor, j * 81 + this.bricksDistance * (j + 1), i * 40 + this.bricksDistance * (i + 1), 0, 1));
                     } else {
-                        this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1), 0, 0));
+                        this.bricks.push(new Brick(this.bricksColor, j * 81 + this.bricksDistance * (j + 1), i * 40 + this.bricksDistance * (i + 1), 0, 0));
                     }
                 }
             }
@@ -34,23 +63,40 @@ class Game {
 
         //create bricks array for level 2
         if (this.level === 2) {
-            for (let i = 0; i < this.rows - 2; i++) {
+            this.backgroundColor = '#140054';
+
+            for (let i = 0; i < this.rows; i++) {
+                
+                if (i === 0) {
+                    this.bricksColor = '#4B87E5';
+                } else if (i === 1) {
+                    this.bricksColor = '#4EBCF0';
+                } else if (i === 2) {
+                    this.bricksColor = '#4ED5DB';
+                } else if (i === 3) {
+                    this.bricksColor = '#48F4CC';
+                } else if (i === 4) {
+                    this.bricksColor = '#41EA96';
+                } else {
+                    this.bricksColor = '#6AE842';
+                }
+
                 for (let j = 0; j < this.columns; j++) {
                     if (i * j === 6) {
-                        this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1), 1, 0));
+                        this.bricks.push(new Brick(this.bricksColor, j * 81 + this.bricksDistance * (j + 1), i * 40 + this.bricksDistance * (i + 1), 1, 0));
                     } else if (i === j) {
-                        this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1), 0, 1));
+                        this.bricks.push(new Brick(this.bricksColor, j * 81 + this.bricksDistance * (j + 1), i * 40 + this.bricksDistance * (i + 1), 0, 1));
                     } else {
-                        this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1), 0, 0));
+                        this.bricks.push(new Brick(this.bricksColor, j * 81 + this.bricksDistance * (j + 1), i * 40 + this.bricksDistance * (i + 1), 0, 0));
                     }
                 }
             }
 
             //create hardBricks
-            for (let i = 4; i < this.rows; i++) {
+            for (let i = 6; i <= this.rows; i++) {
                 for (let j = 0; j < this.columns; j++) {
                     if (j % 2 === 0) {
-                        this.hardBricks.push(new HardBrick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1)));
+                        this.hardBricks.push(new HardBrick(this.bricksColor, j * 81 + this.bricksDistance * (j + 1), i * 40 + this.bricksDistance * (i + 1)));
                     }
                 }
             }
@@ -58,14 +104,16 @@ class Game {
 
         //create bricks array for level 3
         if (this.level === 3) {
+            this.backgroundColor = '#0B2300';
+
             for (let i = 3; i <= 5; i++) {
                 for (let j = 1; j <= this.columns - 2; j++) {
                     if (i * j === 6) {
-                        this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1), 1, 0));
+                        this.bricks.push(new Brick(this.bricksColor, j * 81 + this.bricksDistance * (j + 1), i * 40 + this.bricksDistance * (i + 1), 1, 0));
                     } else if (i === j) {
-                        this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1), 0, 1));
+                        this.bricks.push(new Brick(this.bricksColor, j * 81 + this.bricksDistance * (j + 1), i * 40 + this.bricksDistance * (i + 1), 0, 1));
                     } else {
-                        this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1), 0, 0));
+                        this.bricks.push(new Brick(this.bricksColor, j * 81 + this.bricksDistance * (j + 1), i * 40 + this.bricksDistance * (i + 1), 0, 0));
                     }
                 }
             }
@@ -74,7 +122,7 @@ class Game {
             for (let i = 0; i <= 6; i++) {
                 if (i === 2 || i === 6) {
                     for (let j = 2; j < this.columns - 2; j++) {
-                        this.hardBricks.push(new HardBrick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1)));
+                        this.hardBricks.push(new HardBrick(this.bricksColor, j * 81 + this.bricksDistance * (j + 1), i * 40 + this.bricksDistance * (i + 1)));
                     }
                 }
             }
@@ -85,7 +133,7 @@ class Game {
 
         //game
         if (this.game == true) {
-            background(225);
+            background(this.backgroundColor);
             this.player.draw();
             this.ball.draw();
 
@@ -97,9 +145,9 @@ class Game {
             this.bricks = this.bricks.filter(brick => {
                 if (brick.collision(this.ball)) {
                     if (brick.lives === 1) {
-                        this.liveBoosters.push(new Live(brick.x + brick.width / 2, brick.y + brick.height / 2));
+                        this.liveBoosters.push(new Live(brick.x + brick.width / 2, brick.y + brick.height / 2, this.livesBoosterImage));
                     } else if (brick.smallBalls === 1) {
-                        this.ballBoosters.push(new ExtraBall(brick.x + brick.width / 2, brick.y + brick.height / 2));
+                        this.ballBoosters.push(new ExtraBall(brick.x + brick.width / 2, brick.y + brick.height / 2, this.ballsBoosterImage));
                     }
                     return false
                 } else {
@@ -121,7 +169,7 @@ class Game {
 
         //landing screen 1
         if (this.game == false && this.score === 0) {
-            background(225);
+            background(this.backgroundColor);
             textSize(30);
             fill(250);
             textAlign(CENTER);
@@ -134,7 +182,7 @@ class Game {
             this.liveBoosters = [];
             this.ballBoosters = [];
             this.smallBalls = [];
-            background(225);
+            background(this.backgroundColor);
             textSize(30);
             fill(250);
             textAlign(CENTER);
@@ -144,12 +192,12 @@ class Game {
         }
 
         //congratulations screen level 2
-        if (this.score === 56 && this.level === 2) {
+        if (this.score === 84 && this.level === 2) {
             this.game = false;
             this.liveBoosters = [];
             this.ballBoosters = [];
             this.smallBalls = [];
-            background(225);
+            background(this.backgroundColor);
             textSize(30);
             fill(250);
             textAlign(CENTER);
@@ -159,12 +207,12 @@ class Game {
         }
 
         //congratulations screen level 3
-        if (this.score === 71 && this.level === 3) {
+        if (this.score === 99 && this.level === 3) {
             this.game = false;
             this.liveBoosters = [];
             this.ballBoosters = [];
             this.smallBalls = [];
-            background(225);
+            background(this.backgroundColor);
             textSize(30);
             fill(250);
             textAlign(CENTER);
@@ -208,9 +256,9 @@ class Game {
             for (let i = 0; i < this.smallBalls.length; i++) {
                 if (brick.collision(this.smallBalls[i])) {
                     if (brick.lives === 1) {
-                        this.liveBoosters.push(new Live(brick.x + brick.width / 2, brick.y + brick.height / 2));
+                        this.liveBoosters.push(new Live(brick.x + brick.width / 2, brick.y + brick.height / 2, this.livesBoosterImage));
                     } else if (brick.smallBalls === 1) {
-                        this.ballBoosters.push(new ExtraBall(brick.x + brick.width / 2, brick.y + brick.height / 2));
+                        this.ballBoosters.push(new ExtraBall(brick.x + brick.width / 2, brick.y + brick.height / 2, this.ballsBoosterImage));
                     }
                     return false
                 }
@@ -283,14 +331,14 @@ class Game {
         }
 
         // start again after next level
-        if ((this.score === this.rows * this.columns || this.score === 56) && keyCode === 32 && this.game == false) {
+        if ((this.score === this.rows * this.columns || this.score === 84) && keyCode === 32 && this.game == false) {
             this.level++;
             this.setup();
             this.game = true;
         }
 
         //start again after game over
-        if (keyCode === 32 && this.game == false && (this.player.lives === 0 || this.score === 71)) {
+        if (keyCode === 32 && this.game == false && (this.player.lives === 0 || this.score === 99)) {
             this.player.lives = 4;
             this.score = 0;
             this.level = 1;

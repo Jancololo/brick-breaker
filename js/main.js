@@ -6,6 +6,7 @@ let unicaHass;
 
 function preload() {
   unicaHass = loadFont('assets/NeueHaasUnicaProMedium.otf');
+  game.preload();
 }
 
 function setup() {
