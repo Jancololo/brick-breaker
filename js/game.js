@@ -5,10 +5,12 @@ class Game {
         this.score = 0;
         this.game = false;
         this.level = 1;
-        this.moreBalls = false;
         this.bricksDistance = 4;
 
+        this.addMoreBalls = false;
         this.addExtraLive = false;
+
+        this.catalyst = false;
 
     }
 
@@ -19,16 +21,18 @@ class Game {
         this.smallBalls = [];
         this.hardBricks = [];
         this.live = new Live();
-
+        this.extraBalls = new ExtraBall();
 
         //create bricks for level 1
         if (this.level === 1) {
             for (let i = 0; i < this.rows; i++) {
                 for (let j = 0; j < this.columns; j++) {
                     if (i === 4 && j === 3) {
-                        this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1), 1));
+                        this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1), 1, 0));
+                    } else if (i === 2 && j === 3) {
+                        this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1), 0, 1));
                     } else {
-                        this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1), 0));
+                        this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1), 0, 0));
                     }
                 }
             }
@@ -74,6 +78,8 @@ class Game {
                 if (brick.collision(this.ball)) {
                     if(brick.lives === 1) {
                        this.addExtraLive = true;
+                    } else if (brick.smallBalls ===1) {
+                        this.addMoreBalls = true;
                     }
                     return false
                 } else {
@@ -102,10 +108,11 @@ class Game {
             text(`Press 'space' to start`, WIDTH / 2, HEIGHT / 2 + 20);
         }
 
-        //congratulatins screen
-        if (this.score === this.rows * this.columns && this.level === 1) {
+        //congratulations screen
+        if (this.score === this.rows * this.columns && this.level === 1 || this.score === 56 && this.level ===2) {
             this.game = false;
-            this.moreBalls = false;
+            this.addMoreBalls = false;
+            this.catalyst = false;
             background(225);
             textSize(30);
             fill(250);
@@ -118,7 +125,7 @@ class Game {
         //game over screen
         if (this.player.lives === 0) {
             this.game = false;
-            this.moreBalls = false;
+            this.addMoreBalls = false;
             background(20);
             textSize(30);
             fill(250);
@@ -127,12 +134,13 @@ class Game {
             text(`Press 'space' to start again`, WIDTH / 2, HEIGHT / 2 + 20);
         }
 
-        //more balls
-        if (this.score === 3 || this.score === 45) {
-            this.balls();
+        //drop more small balls if brick has extra property
+        if (this.addMoreBalls) {
+            this.extraBalls.state = true;
+            this.extraBalls.draw();
         }
 
-        if (this.moreBalls == true) {
+        if (this.catalyst) {
 
             this.smallBalls.forEach(function (smallBall) {
                 smallBall.draw();
@@ -144,7 +152,9 @@ class Game {
                 for (let i = 0; i < this.smallBalls.length; i++) {
                     if (brick.collision(this.smallBalls[i])) {
                         if (brick.lives === 1) {
-                            //console.log('smallBalls hallo')
+                            this.addExtraLive = true;
+                        } else if (brick.smallBalls ===1) {
+                            this.addMoreBalls = true;
                         }
                         return false
                     }
@@ -200,9 +210,5 @@ class Game {
             this.setup();
             this.game = true;
         }
-    }
-
-    balls() {
-        this.moreBalls = true;
     }
 }
