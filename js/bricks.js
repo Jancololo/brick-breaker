@@ -26,7 +26,7 @@ class Brick {
             return true;
         } 
         //detect collision with brick sides
-        else if (ball.y < this.y + this.height && ball.y > this.y && ball.x >= this.x - ball.rad && ball.x <= this.x + this.width + ball.rad) {
+        else if (ball.y <= this.y + this.height && ball.y >= this.y && ball.x >= this.x - ball.rad && ball.x <= this.x + this.width + ball.rad) {
             ball.xspeed *= -1;
             game.score++;
             game.updateScore();
@@ -39,6 +39,6 @@ class Brick {
     draw() {
         noStroke();
         fill(this.color);
-        rect(this.x, this.y, this.width, this.height, 3);
+        rect(this.x, this.y, this.width, this.height, 2);
     }
 }

@@ -94,8 +94,9 @@ class Ball {
             if (this.y >= HEIGHT) {
                 game.player.lives--;
                 game.updateLives();
-                game.addExtraLive = false;
-                game.addMoreBalls = false;
+                game.liveBoosters = [];
+                game.ballBoosters = [];
+                game.smallBalls = [];
                 this.xspeed = 0;
                 this.starter = 0;
                 this.changeY();

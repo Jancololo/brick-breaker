@@ -1,12 +1,13 @@
 class SmallBall {
     constructor() {
-        this.xspeed = Math.floor(Math.random() * 7);
-        this.yspeed = Math.floor(Math.random() * (-6 - (-2)) - 2);
+        this.xspeed = Math.floor(Math.random() * (7 - (-7)) + (-7));
+        this.yspeed = Math.floor(Math.random() * (-2 - (-6)) + (-6));
         this.diameter = 10;
         this.rad = this.diameter / 2;
-
         this.x = game.player.x + game.player.width / 2;
         this.y = game.player.y - this.rad;
+
+        this.state = true;
     }
 
     goLeft() {
@@ -66,7 +67,8 @@ class SmallBall {
 
         //ball don't reset if goes below the paddle
         if (this.y >= HEIGHT) {
-            this.x = -100;
+            this.state = false;
+            game.removeSmallBalls();
         }
 
         //draw Ball

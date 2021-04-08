@@ -6,12 +6,6 @@ class Game {
         this.game = false;
         this.level = 1;
         this.bricksDistance = 4;
-
-        this.addMoreBalls = false;
-        this.addExtraLive = false;
-
-        this.catalyst = false;
-
     }
 
     setup() {
@@ -20,16 +14,16 @@ class Game {
         this.bricks = [];
         this.smallBalls = [];
         this.hardBricks = [];
-        this.live = new Live();
-        this.extraBalls = new ExtraBall();
+        this.liveBoosters = [];
+        this.ballBoosters = [];
 
-        //create bricks for level 1
+        //create bricks array for level 1
         if (this.level === 1) {
             for (let i = 0; i < this.rows; i++) {
                 for (let j = 0; j < this.columns; j++) {
-                    if (i === 4 && j === 3) {
+                    if (i * j === 6) {
                         this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1), 1, 0));
-                    } else if (i === 2 && j === 3) {
+                    } else if (i === j) {
                         this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1), 0, 1));
                     } else {
                         this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1), 0, 0));
@@ -42,7 +36,13 @@ class Game {
         if (this.level === 2) {
             for (let i = 0; i < this.rows - 2; i++) {
                 for (let j = 0; j < this.columns; j++) {
-                    this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1)));
+                    if (i * j === 6) {
+                        this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1), 1, 0));
+                    } else if (i === j) {
+                        this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1), 0, 1));
+                    } else {
+                        this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1), 0, 0));
+                    }
                 }
             }
 
@@ -56,8 +56,28 @@ class Game {
             }
         }
 
-        for (let i = 0; i < 7; i++) {
-            this.smallBalls.push(new SmallBall())
+        //create bricks array for level 3
+        if (this.level === 3) {
+            for (let i = 3; i <= 5; i++) {
+                for (let j = 1; j <= this.columns - 2; j++) {
+                    if (i * j === 6) {
+                        this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1), 1, 0));
+                    } else if (i === j) {
+                        this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1), 0, 1));
+                    } else {
+                        this.bricks.push(new Brick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1), 0, 0));
+                    }
+                }
+            }
+
+            //create hardBricks
+            for (let i = 0; i <= 6; i++) {
+                if (i === 2 || i === 6) {
+                    for (let j = 2; j < this.columns - 2; j++) {
+                        this.hardBricks.push(new HardBrick(j * 81 + this.bricksDistance * (j + 1), i * 50 + this.bricksDistance * (i + 1)));
+                    }
+                }
+            }
         }
     }
 
@@ -70,16 +90,16 @@ class Game {
             this.ball.draw();
 
             this.bricks.forEach(function (brick) {
-                    brick.draw();
+                brick.draw();
             })
 
-            //collision with bricks opcio 1
+            //collision with bricks
             this.bricks = this.bricks.filter(brick => {
                 if (brick.collision(this.ball)) {
-                    if(brick.lives === 1) {
-                       this.addExtraLive = true;
-                    } else if (brick.smallBalls ===1) {
-                        this.addMoreBalls = true;
+                    if (brick.lives === 1) {
+                        this.liveBoosters.push(new Live(brick.x + brick.width / 2, brick.y + brick.height / 2));
+                    } else if (brick.smallBalls === 1) {
+                        this.ballBoosters.push(new ExtraBall(brick.x + brick.width / 2, brick.y + brick.height / 2));
                     }
                     return false
                 } else {
@@ -88,8 +108,8 @@ class Game {
             })
         }
 
-        //level 2 (add hard bricks)
-        if (this.level === 2 && this.game == true) {
+        //level 2 and 3 add hard bricks
+        if (this.level === 2 || this.level === 3 && this.game == true) {
             this.hardBricks.forEach(function (hardBrick) {
                 hardBrick.draw();
             })
@@ -108,11 +128,12 @@ class Game {
             text(`Press 'space' to start`, WIDTH / 2, HEIGHT / 2 + 20);
         }
 
-        //congratulations screen
-        if (this.score === this.rows * this.columns && this.level === 1 || this.score === 56 && this.level ===2) {
+        //congratulations screen level 1
+        if (this.score === this.rows * this.columns && this.level === 1) {
             this.game = false;
-            this.addMoreBalls = false;
-            this.catalyst = false;
+            this.liveBoosters = [];
+            this.ballBoosters = [];
+            this.smallBalls = [];
             background(225);
             textSize(30);
             fill(250);
@@ -122,10 +143,42 @@ class Game {
             text(`Press 'space' to start next level`, WIDTH / 2, HEIGHT / 2 + 40);
         }
 
+        //congratulations screen level 2
+        if (this.score === 56 && this.level === 2) {
+            this.game = false;
+            this.liveBoosters = [];
+            this.ballBoosters = [];
+            this.smallBalls = [];
+            background(225);
+            textSize(30);
+            fill(250);
+            textAlign(CENTER);
+            text(`Congratulations`, WIDTH / 2, HEIGHT / 2 - 40);
+            text(`Score: ${this.score}`, WIDTH / 2, HEIGHT / 2);
+            text(`Press 'space' to start next level`, WIDTH / 2, HEIGHT / 2 + 40);
+        }
+
+        //congratulations screen level 3
+        if (this.score === 71 && this.level === 3) {
+            this.game = false;
+            this.liveBoosters = [];
+            this.ballBoosters = [];
+            this.smallBalls = [];
+            background(225);
+            textSize(30);
+            fill(250);
+            textAlign(CENTER);
+            text(`Congratulations, has acabat el joc`, WIDTH / 2, HEIGHT / 2 - 40);
+            text(`Score: ${this.score}`, WIDTH / 2, HEIGHT / 2);
+            text(`Press 'space' to start again`, WIDTH / 2, HEIGHT / 2 + 40);
+        }
+
         //game over screen
         if (this.player.lives === 0) {
             this.game = false;
-            this.addMoreBalls = false;
+            this.liveBoosters = [];
+            this.ballBoosters = [];
+            this.smallBalls = [];
             background(20);
             textSize(30);
             fill(250);
@@ -134,47 +187,44 @@ class Game {
             text(`Press 'space' to start again`, WIDTH / 2, HEIGHT / 2 + 20);
         }
 
-        //drop more small balls if brick has extra property
-        if (this.addMoreBalls) {
-            this.extraBalls.state = true;
-            this.extraBalls.draw();
-        }
+        //draw live booster
+        this.liveBoosters.forEach(function (liveBooster) {
+            liveBooster.draw();
+        })
 
-        if (this.catalyst) {
+        //draw ballsBooster
+        this.ballBoosters.forEach(function (ballBooster) {
+            ballBooster.draw();
+        })
 
-            this.smallBalls.forEach(function (smallBall) {
-                smallBall.draw();
-            })
+        // draw extra small balls
+        this.smallBalls.forEach(function (smallBall) {
+            smallBall.draw();
+        })
 
-            //collision with normal bricks
-            this.bricks = this.bricks.filter(brick => {
+        //collision with normal bricks
+        this.bricks = this.bricks.filter(brick => {
 
-                for (let i = 0; i < this.smallBalls.length; i++) {
-                    if (brick.collision(this.smallBalls[i])) {
-                        if (brick.lives === 1) {
-                            this.addExtraLive = true;
-                        } else if (brick.smallBalls ===1) {
-                            this.addMoreBalls = true;
-                        }
-                        return false
+            for (let i = 0; i < this.smallBalls.length; i++) {
+                if (brick.collision(this.smallBalls[i])) {
+                    if (brick.lives === 1) {
+                        this.liveBoosters.push(new Live(brick.x + brick.width / 2, brick.y + brick.height / 2));
+                    } else if (brick.smallBalls === 1) {
+                        this.ballBoosters.push(new ExtraBall(brick.x + brick.width / 2, brick.y + brick.height / 2));
                     }
+                    return false
                 }
-                return true
-            })
+            }
+            return true
+        })
 
-            //collision with hard bricks
-            for (let i = 0; i < this.hardBricks.length; i++) {
-                for (let j = 0; j < this.smallBalls.length; j++) {
-                    this.hardBricks[i].collision(this.smallBalls[j]);
-                }
+        //collision with hard bricks
+        for (let i = 0; i < this.hardBricks.length; i++) {
+            for (let j = 0; j < this.smallBalls.length; j++) {
+                this.hardBricks[i].collision(this.smallBalls[j]);
             }
         }
 
-        //drop live if brick has extra live property
-        if (this.addExtraLive) {
-            this.live.state = true;
-            this.live.draw();
-        }
     }
 
     updateScore() {
@@ -187,7 +237,45 @@ class Game {
         lives.innerText = this.player.lives;
     }
 
+    removeLiveBooster() {
+        this.liveBoosters = this.liveBoosters.filter(liveBooster => {
+            if (liveBooster.state == false) {
+                return false
+            }
+            return true
+        })
+    }
+
+    removeBallBooster() {
+        this.ballBoosters = this.ballBoosters.filter(ballBooster => {
+            if (ballBooster.state == false) {
+                return false
+            }
+            return true
+        })
+    }
+
+    removeSmallBalls() {
+        this.smallBalls = this.smallBalls.filter(smallBall => {
+            if (smallBall.state == false) {
+                return false
+            }
+            return true
+        })
+    }
+
     keyPressed() {
+
+        //simular score
+        if (keyCode === 76) {
+            this.score++;
+            this.updateScore();
+        }
+
+        if (keyCode === 75) {
+            this.score--;
+            this.updateScore();
+        }
 
         //first start
         if (keyCode === 32 && this.game == false && this.player.lives === 4 && this.score === 0) {
@@ -195,16 +283,17 @@ class Game {
         }
 
         // start again after next level
-        if (keyCode === 32 && this.score === this.rows * this.columns && this.game == false) {
+        if ((this.score === this.rows * this.columns || this.score === 56) && keyCode === 32 && this.game == false) {
             this.level++;
             this.setup();
             this.game = true;
         }
 
         //start again after game over
-        if (keyCode === 32 && this.player.lives === 0 && this.game == false) {
+        if (keyCode === 32 && this.game == false && (this.player.lives === 0 || this.score === 71)) {
             this.player.lives = 4;
             this.score = 0;
+            this.level = 1;
             this.updateLives();
             this.updateScore();
             this.setup();
