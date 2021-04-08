@@ -9,10 +9,6 @@ class Player {
     }
 
     draw() {
-        noStroke();
-        fill(255);
-        rect(this.x, this.y, this.width, this.height, 3);
-
         if (keyIsDown(RIGHT_ARROW) && this.x < WIDTH - this.width / 2) {
             this.x += this.speed;
         }
@@ -20,5 +16,9 @@ class Player {
         if (keyIsDown(LEFT_ARROW) && this.x > -this.width / 2) {
             this.x -= this.speed;
         }
+
+        noStroke();
+        fill(255);
+        rect(this.x, this.y, this.width, this.height, 3);
     }
 }

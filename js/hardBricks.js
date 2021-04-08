@@ -5,7 +5,6 @@ class HardBrick extends Brick {
     }
 
     collision(ball) {
-
         //detect collision with brick bottom
         if (ball.y <= this.y + this.height + ball.rad && ball.y >= this.y + this.height && ball.x > this.x - ball.rad && ball.x < this.x + this.width + ball.rad) {
             ball.changeY();

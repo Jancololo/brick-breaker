@@ -31,7 +31,7 @@ class Live extends Booster {
         super.draw();
 
         //detect collision with player and add extra feature
-        if (this.y + this.height >= game.player.y && this.x >= game.player.x && this.x < game.player.x + game.player.width) {
+        if (this.y + this.height >= game.player.y && this.y + this.height <= game.player.y + game.player.height && this.x >= game.player.x && this.x < game.player.x + game.player.width) {
             game.player.lives++
             this.state = false;
             game.removeLiveBooster();
@@ -54,7 +54,7 @@ class ExtraBall extends Booster {
         super.draw();
 
         //check if player catches it
-        if (this.y + this.height >= game.player.y && this.x >= game.player.x && this.x < game.player.x + game.player.width) {
+        if (this.y + this.height >= game.player.y && this.y + this.height <= game.player.y + game.player.height && this.x >= game.player.x && this.x < game.player.x + game.player.width) {
             this.createBalls();
             this.state = false;
             game.removeBallBooster();

@@ -188,7 +188,7 @@ class Game {
             }
         }
 
-        //landing screen 1
+        //landing screen
         if (this.game == false && this.score === 0) {
             background(this.backgroundColor);
             image(this.logoImage, WIDTH / 2 - 200, 0, 400, 250);
@@ -206,7 +206,7 @@ class Game {
             this.smallBalls = [];
             background(this.backgroundColor);
             textSize(25);
-            fill(255, 255, 255, 190);
+            fill(255);
             textAlign(CENTER);
             text(`Congratulations`, WIDTH / 2, HEIGHT / 2 - 50);
             text(`Score: ${this.score}`, WIDTH / 2, HEIGHT / 2);
@@ -221,7 +221,7 @@ class Game {
             this.smallBalls = [];
             background(this.backgroundColor);
             textSize(25);
-            fill(255, 255, 255);
+            fill(255);
             textAlign(CENTER);
             text(`Congratulations`, WIDTH / 2, HEIGHT / 2 - 50);
             text(`Score: ${this.score}`, WIDTH / 2, HEIGHT / 2);
@@ -236,7 +236,7 @@ class Game {
             this.smallBalls = [];
             background(this.backgroundColor);
             textSize(25);
-            fill(255, 255, 255);
+            fill(255);
             textAlign(CENTER);
             text(`Congratulations, has acabat el joc`, WIDTH / 2, HEIGHT / 2 - 50);
             text(`Score: ${this.score}`, WIDTH / 2, HEIGHT / 2);
@@ -252,7 +252,7 @@ class Game {
             background(20);
             image(this.logoImage, WIDTH / 2 - 200, 0, 400, 250);
             textSize(25);
-            fill(255, 255, 255);
+            fill(255);
             textAlign(CENTER);
             text('GAME OVER', WIDTH / 2, HEIGHT / 2 + 20);
             textSize(20);
@@ -296,7 +296,6 @@ class Game {
                 this.hardBricks[i].collision(this.smallBalls[j]);
             }
         }
-
     }
 
     removeLiveBooster() {
