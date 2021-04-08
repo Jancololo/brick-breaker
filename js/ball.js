@@ -93,7 +93,6 @@ class Ball {
             //ball reset if goes below the paddle
             if (this.y >= HEIGHT) {
                 game.player.lives--;
-                game.updateLives();
                 game.liveBoosters = [];
                 game.ballBoosters = [];
                 game.smallBalls = [];

@@ -17,9 +17,12 @@ function setup() {
 
 function draw() {  
     game.draw();
+    document.body.style.backgroundColor = game.backgroundColor;
 }
 
 function keyPressed() {
     game.ball.keyPressed();
     game.keyPressed();
 }
+
+

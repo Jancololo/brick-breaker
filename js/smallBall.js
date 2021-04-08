@@ -6,7 +6,6 @@ class SmallBall {
         this.rad = this.diameter / 2;
         this.x = game.player.x + game.player.width / 2;
         this.y = game.player.y - this.rad;
-
         this.state = true;
     }
 

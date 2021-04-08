@@ -12,12 +12,16 @@ class Game {
         this.paddleBoosterImage;
         this.livesBoosterImage;
         this.ballsBoosterImage;
+        this.liveImage
+        this.logoImage
     }
 
     preload() {
         this.paddleBoosterImage = loadImage('assets/paddle-booster.png');
         this.livesBoosterImage = loadImage('assets/lives-booster.png');
         this.ballsBoosterImage = loadImage('assets/balls-booster.png');
+        this.liveImage = loadImage('assets/live.png');
+        this.logoImage = loadImage('assets/logo.png')
     }
 
     setup() {
@@ -104,9 +108,17 @@ class Game {
 
         //create bricks array for level 3
         if (this.level === 3) {
-            this.backgroundColor = '#0B2300';
+            this.backgroundColor = '#00211F';
 
             for (let i = 3; i <= 5; i++) {
+                if (i === 3) {
+                    this.bricksColor = '#4ED5DB';
+                } else if (i === 4) {
+                    this.bricksColor = '#48F4CC';
+                } else {
+                    this.bricksColor = '#41EA96';
+                }
+
                 for (let j = 1; j <= this.columns - 2; j++) {
                     if (i * j === 6) {
                         this.bricks.push(new Brick(this.bricksColor, j * 81 + this.bricksDistance * (j + 1), i * 40 + this.bricksDistance * (i + 1), 1, 0));
@@ -134,6 +146,15 @@ class Game {
         //game
         if (this.game == true) {
             background(this.backgroundColor);
+            textSize(22);
+            fill(255, 255, 255, 140);
+            text(this.score, 16, HEIGHT - 6);
+
+            image(this.liveImage, WIDTH - 40, HEIGHT - 23, 18, 18);
+
+            textSize(22);
+            text(this.player.lives, WIDTH - 10, HEIGHT - 6);
+
             this.player.draw();
             this.ball.draw();
 
@@ -170,8 +191,9 @@ class Game {
         //landing screen 1
         if (this.game == false && this.score === 0) {
             background(this.backgroundColor);
-            textSize(30);
-            fill(250);
+            image(this.logoImage, WIDTH / 2 - 200, 0, 400, 250);
+            textSize(25);
+            fill(255, 255, 255);
             textAlign(CENTER);
             text(`Press 'space' to start`, WIDTH / 2, HEIGHT / 2 + 20);
         }
@@ -183,12 +205,12 @@ class Game {
             this.ballBoosters = [];
             this.smallBalls = [];
             background(this.backgroundColor);
-            textSize(30);
-            fill(250);
+            textSize(25);
+            fill(255, 255, 255, 190);
             textAlign(CENTER);
-            text(`Congratulations`, WIDTH / 2, HEIGHT / 2 - 40);
+            text(`Congratulations`, WIDTH / 2, HEIGHT / 2 - 50);
             text(`Score: ${this.score}`, WIDTH / 2, HEIGHT / 2);
-            text(`Press 'space' to start next level`, WIDTH / 2, HEIGHT / 2 + 40);
+            text(`Press 'space' to start next level`, WIDTH / 2, HEIGHT / 2 + 50);
         }
 
         //congratulations screen level 2
@@ -198,12 +220,12 @@ class Game {
             this.ballBoosters = [];
             this.smallBalls = [];
             background(this.backgroundColor);
-            textSize(30);
-            fill(250);
+            textSize(25);
+            fill(255, 255, 255);
             textAlign(CENTER);
-            text(`Congratulations`, WIDTH / 2, HEIGHT / 2 - 40);
+            text(`Congratulations`, WIDTH / 2, HEIGHT / 2 - 50);
             text(`Score: ${this.score}`, WIDTH / 2, HEIGHT / 2);
-            text(`Press 'space' to start next level`, WIDTH / 2, HEIGHT / 2 + 40);
+            text(`Press 'space' to start next level`, WIDTH / 2, HEIGHT / 2 + 50);
         }
 
         //congratulations screen level 3
@@ -213,12 +235,12 @@ class Game {
             this.ballBoosters = [];
             this.smallBalls = [];
             background(this.backgroundColor);
-            textSize(30);
-            fill(250);
+            textSize(25);
+            fill(255, 255, 255);
             textAlign(CENTER);
-            text(`Congratulations, has acabat el joc`, WIDTH / 2, HEIGHT / 2 - 40);
+            text(`Congratulations, has acabat el joc`, WIDTH / 2, HEIGHT / 2 - 50);
             text(`Score: ${this.score}`, WIDTH / 2, HEIGHT / 2);
-            text(`Press 'space' to start again`, WIDTH / 2, HEIGHT / 2 + 40);
+            text(`Press 'space' to start again`, WIDTH / 2, HEIGHT / 2 + 50);
         }
 
         //game over screen
@@ -228,11 +250,13 @@ class Game {
             this.ballBoosters = [];
             this.smallBalls = [];
             background(20);
-            textSize(30);
-            fill(250);
+            image(this.logoImage, WIDTH / 2 - 200, 0, 400, 250);
+            textSize(25);
+            fill(255, 255, 255);
             textAlign(CENTER);
-            text('game over', WIDTH / 2, HEIGHT / 2 - 20);
-            text(`Press 'space' to start again`, WIDTH / 2, HEIGHT / 2 + 20);
+            text('GAME OVER', WIDTH / 2, HEIGHT / 2 + 20);
+            textSize(20);
+            text(`Press 'space' to start again`, WIDTH / 2, HEIGHT - 50);
         }
 
         //draw live booster
@@ -275,16 +299,6 @@ class Game {
 
     }
 
-    updateScore() {
-        const score = document.querySelector('.score span');
-        score.innerText = this.score;
-    }
-
-    updateLives() {
-        const lives = document.querySelector('.lives span');
-        lives.innerText = this.player.lives;
-    }
-
     removeLiveBooster() {
         this.liveBoosters = this.liveBoosters.filter(liveBooster => {
             if (liveBooster.state == false) {
@@ -314,15 +328,13 @@ class Game {
 
     keyPressed() {
 
-        //simular score
+        //simulate score
         if (keyCode === 76) {
             this.score++;
-            this.updateScore();
         }
 
         if (keyCode === 75) {
             this.score--;
-            this.updateScore();
         }
 
         //first start
@@ -342,8 +354,6 @@ class Game {
             this.player.lives = 4;
             this.score = 0;
             this.level = 1;
-            this.updateLives();
-            this.updateScore();
             this.setup();
             this.game = true;
         }

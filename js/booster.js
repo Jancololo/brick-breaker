@@ -33,7 +33,6 @@ class Live extends Booster {
         //detect collision with player and add extra feature
         if (this.y + this.height >= game.player.y && this.x >= game.player.x && this.x < game.player.x + game.player.width) {
             game.player.lives++
-            game.updateLives();
             this.state = false;
             game.removeLiveBooster();
         }
